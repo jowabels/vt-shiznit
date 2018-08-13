@@ -21,20 +21,24 @@ def main():
         print "The text file you provided does not exists!"
         sys.exit()
 
-    with open(hash_file, "r") as fa:
+    with open(hash_file, "r") as fa, open("file_list_output.csv", "a") as out:
         for line in fa:
             myline = line.strip().split(",")
             file_path = myline[0]
             file_sha1 = myline[-1]
-            print file_path, file_sha1
 
             time.sleep(15)
 
             params = {"apikey" : mykey, "resource" : "{0}".format(file_sha1)}
             response = requests.get("https://www.virustotal.com/vtapi/v2/file/report", params=params)
             json_response = response.json()
-            print json_response
-            break
+
+            if json_response["response_code"]:
+                print "{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, json_response["scan_date"], json_response["positives"], json_response["total"])
+                out.write("{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, json_response["scan_date"], json_response["positives"], json_response["total"]))
+            else:
+                print "{0},{1},NONE,NONE,NONE\n".format(file_path, file_sha1)
+                out.write("{0},{1},NONE,NONE,NONE\n".format(file_path, file_sha1))
 
 
 if __name__ == "__main__":
