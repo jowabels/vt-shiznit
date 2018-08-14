@@ -21,7 +21,9 @@ def main():
         print "The text file you provided does not exists!"
         sys.exit()
 
-    with open(hash_file, "r") as fa, open("file_list_output.csv", "a") as out:
+    outfile = "{0}\{1}_output".format(os.path.dirname(hash_file), os.path.basename(hash_file))
+
+    with open(hash_file, "r") as fa, open(outfile, "a") as out:
         for line in fa:
             myline = line.strip().split(",")
             file_path = myline[0]
@@ -38,8 +40,8 @@ def main():
                     print "{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, json_response["scan_date"], json_response["positives"], json_response["total"])
                     out.write("{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, json_response["scan_date"], json_response["positives"], json_response["total"]))
                 else:
-                    print "{0},{1},NONE,NONE,NONE\n".format(file_path, file_sha1)
-                    out.write("{0},{1},NONE,NONE,NONE\n".format(file_path, file_sha1))
+                    print "{0},{1},NONE,NONE\n".format(file_path, file_sha1)
+                    out.write("{0},{1},NONE,NONE\n".format(file_path, file_sha1))
             else:
                 print "Request HTTP code: {0}".format(response.status_code)
                 pass
