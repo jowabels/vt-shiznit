@@ -30,7 +30,7 @@ def main():
             file_path = myline[0]
             file_sha1 = myline[-1]
 
-            time.sleep(1)
+            #time.sleep(1)
 
             if file_sha1 not in cache:
                 params = {"apikey" : mykey, "resource" : "{0}".format(file_sha1)}
@@ -51,7 +51,10 @@ def main():
             else:
                 print "{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, cache[file_sha1]["positives"], cache[file_sha1]["total"])
                 out.write("{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, cache[file_sha1]["positives"], cache[file_sha1]["total"]))
-                
+
+    outjson = "{0}\{1}_json".format(os.path.dirname(hash_file), os.path.basename(hash_file))
+    with open(outjson, "w") as oj:
+        json.dump(cache, oj)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
