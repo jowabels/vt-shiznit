@@ -21,7 +21,7 @@ def main():
         print "The text file you provided does not exists!"
         sys.exit()
 
-    outfile = "{0}\{1}_output".format(os.path.dirname(hash_file), os.path.basename(hash_file))
+    outfile = r"{0}\{1}_output".format(os.path.dirname(hash_file), os.path.basename(hash_file))
     cache = {}
 
     with open(hash_file, "r") as fa, open(outfile, "a") as out:
@@ -49,13 +49,13 @@ def main():
                         print "Request HTTP code: {0}".format(response.status_code)
                         pass
                 else:
-                    print "{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, cache[file_sha1]["positives"], cache[file_sha1]["total"])
-                    out.write("{0},{1},{2},{3}/{4}\n".format(file_path, file_sha1, cache[file_sha1]["positives"], cache[file_sha1]["total"]))
+                    print "{0},{1},{2}/{3}\n".format(file_path, file_sha1, cache[file_sha1]["positives"], cache[file_sha1]["total"])
+                    out.write("{0},{1},{2}/{3}\n".format(file_path, file_sha1, cache[file_sha1]["positives"], cache[file_sha1]["total"]))
             except Exception as e:
                 print e
                 pass
 
-    outjson = "{0}\{1}_json".format(os.path.dirname(hash_file), os.path.basename(hash_file))
+    outjson = r"{0}\{1}_json".format(os.path.dirname(hash_file), os.path.basename(hash_file))
     with open(outjson, "w") as oj:
         json.dump(cache, oj)
 
